@@ -1,11 +1,9 @@
 ---@class Node
----@field type string
 ---@field value string
 local Node = {}
 
-function Node.new(type, value)
+function Node.new(value)
     return {
-        type = type,
         value = value
     }
 end
