@@ -1,8 +1,13 @@
 local input = io.open("index.js")
-local Tokenizer = require('Tokenizer');
+local Lexer = require('Lexer');
+
 
 if input then
     ---@type string
     local str = input:read("a")
-    Tokenizer(str)
+    local source = Lexer:new(str);
+
+    while source:peek() ~= "\0" do
+        source:getToken()
+    end
 end

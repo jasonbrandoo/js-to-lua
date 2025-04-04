@@ -1,0 +1,61 @@
+local Node = require("Node")
+
+local Lexer = {}
+Lexer.source = ""
+Lexer.currentChar = ""
+Lexer.token = {}
+Lexer.currentIndex = 0
+
+function Lexer.new(self, source)
+    self.source = source
+    return self
+end
+
+function Lexer.nextChar(self)
+    if self.currentIndex >= #self.source then
+        print("End of file")
+        self.currentChar = "\0"
+    else
+        self.currentIndex = self.currentIndex + 1
+        self.currentChar = self.source:sub(self.currentIndex, self.currentIndex)
+    end
+end
+
+function Lexer.peek(self)
+    if self.currentIndex >= #self.source then
+        return "\0"
+    else
+        return self.source:sub(self.currentIndex + 1, self.currentIndex + 1)
+    end
+end
+
+function Lexer.getToken(self)
+    if self.currentChar:match("%a") then
+        local char = "";
+        local startIndex = self.currentIndex
+        while self:peek():match("%w") do
+            self:nextChar()
+        end
+        char = self.source:sub(startIndex, self.currentIndex)
+        table.insert(self.token, char)
+    end
+    if self.currentChar:match("%\"") then
+        self:nextChar()
+        local char = "";
+        local startIndex = self.currentIndex
+        while self.currentChar ~= "\"" do
+            if self.currentChar == "\n" or self.currentChar == "\t" then
+                break
+            end
+            self:nextChar()
+        end
+        char = self.source:sub(startIndex, self.currentIndex - 1)
+        table.insert(self.token, char)
+    end
+    if self.currentChar:match("[%=%+%-%*]") then
+        table.insert(self.token, self.currentChar)
+    end
+    self:nextChar()
+end
+
+return Lexer
