@@ -1,3 +1,1 @@
-let foo = "foo";
-let bar = "bar";
-let result = "foo" + "bar";
+let foo = 11 + 22;

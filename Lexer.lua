@@ -1,5 +1,10 @@
 local Node = require("Node")
 
+---@class Lexer
+---@field source string
+---@field currentChar string
+---@field token table
+---@field currentIndex number
 local Lexer = {}
 Lexer.source = ""
 Lexer.currentChar = ""
@@ -8,6 +13,9 @@ Lexer.currentIndex = 0
 
 function Lexer.new(self, source)
     self.source = source
+    while self:peek() ~= "\0" do
+        self:getToken()
+    end
     return self
 end
 
@@ -37,7 +45,16 @@ function Lexer.getToken(self)
             self:nextChar()
         end
         char = self.source:sub(startIndex, self.currentIndex)
-        table.insert(self.token, char)
+        table.insert(self.token, Node:new("expression", char))
+    end
+    if self.currentChar:match("%d") then
+        local char = "";
+        local startIndex = self.currentIndex
+        while self:peek():match("%d") do
+            self:nextChar()
+        end
+        char = self.source:sub(startIndex, self.currentIndex)
+        table.insert(self.token, Node:new("digit", char))
     end
     if self.currentChar:match("%\"") then
         self:nextChar()
@@ -50,10 +67,10 @@ function Lexer.getToken(self)
             self:nextChar()
         end
         char = self.source:sub(startIndex, self.currentIndex - 1)
-        table.insert(self.token, char)
+        table.insert(self.token, Node:new("string", char))
     end
     if self.currentChar:match("[%=%+%-%*]") then
-        table.insert(self.token, self.currentChar)
+        table.insert(self.token, Node:new("operator", self.currentChar))
     end
     self:nextChar()
 end
