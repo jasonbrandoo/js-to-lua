@@ -1,7 +1,7 @@
 ---@class Node
 ---@field type string
 ---@field value string
----@field new fun(self: Node, type: string, value: string): table
+---@field new fun(self: Node, type: Grammar, value: string): table
 local Node = {}
 Node.type = ""
 Node.value = ""

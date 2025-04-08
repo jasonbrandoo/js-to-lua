@@ -1,4 +1,5 @@
 local Node = require("Node")
+local Grammar = require("Grammar")
 
 ---@class Lexer
 ---@field source string
@@ -45,7 +46,7 @@ function Lexer.getToken(self)
             self:nextChar()
         end
         char = self.source:sub(startIndex, self.currentIndex)
-        table.insert(self.token, Node:new("expression", char))
+        table.insert(self.token, Node:new(Grammar.Identifier, char))
     end
     if self.currentChar:match("%d") then
         local char = "";
@@ -54,7 +55,7 @@ function Lexer.getToken(self)
             self:nextChar()
         end
         char = self.source:sub(startIndex, self.currentIndex)
-        table.insert(self.token, Node:new("digit", char))
+        table.insert(self.token, Node:new(Grammar.NumberLiteral, char))
     end
     if self.currentChar:match("%\"") then
         self:nextChar()
@@ -67,10 +68,10 @@ function Lexer.getToken(self)
             self:nextChar()
         end
         char = self.source:sub(startIndex, self.currentIndex - 1)
-        table.insert(self.token, Node:new("string", char))
+        table.insert(self.token, Node:new(Grammar.StringLiteral, char))
     end
     if self.currentChar:match("[%=%+%-%*]") then
-        table.insert(self.token, Node:new("operator", self.currentChar))
+        table.insert(self.token, Node:new(Grammar.Punctuator, self.currentChar))
     end
     self:nextChar()
 end
