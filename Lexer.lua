@@ -4,7 +4,7 @@ local Grammar = require("Grammar")
 ---@class Lexer
 ---@field source string
 ---@field currentChar string
----@field token table
+---@field token Node[]
 ---@field currentIndex number
 local Lexer = {}
 Lexer.source = ""

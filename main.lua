@@ -1,4 +1,3 @@
--- local input = io.open("index.js")
 local Lexer = require('Lexer');
 local Parser = require('Parser');
 
@@ -13,10 +12,7 @@ if not file then
     error("Error opening file : " .. err)
 end
 
--- if input then
---     ---@type string
-local source = Lexer:new(file:read("a"));
-local parse = Parser:parse(source.token)
+local lexer = Lexer:new(file:read("a"));
+local parser = Parser:new(lexer)
 
-
--- end
+print("Ok")

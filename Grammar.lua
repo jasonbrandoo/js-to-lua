@@ -4,7 +4,8 @@ local Grammar = {
     StringLiteral = "StringLiteral",
     NumberLiteral = "NumberLiteral",
     Punctuator = "Punctuator",
-    RightBracePunctuator = "RightBracePunctuator"
+    RightBracePunctuator = "RightBracePunctuator",
+    EOF = "EOF"
 }
 
 return Grammar

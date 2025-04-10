@@ -1,1 +1,1 @@
-let foo = 11 + 22;
+let foo = "bar";
