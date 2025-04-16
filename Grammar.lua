@@ -5,7 +5,8 @@ local Grammar = {
     NumberLiteral = "NumberLiteral",
     Punctuator = "Punctuator",
     RightBracePunctuator = "RightBracePunctuator",
-    EOF = "EOF"
+    EOF = "EOF",
+    NEWLINE = "\n"
 }
 
 return Grammar

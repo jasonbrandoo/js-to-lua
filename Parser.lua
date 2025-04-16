@@ -28,9 +28,10 @@ end
 ---@return AST
 function Parser.parse(self)
     local walk = function()
+        local token = {}
         self:nextToken()
         if self.currentToken.value == "let" and self.currentToken.type == Grammar.Identifier then
-            local variableDeclaration = {
+            token = {
                 type = "VariableDeclaration",
                 value = self.currentToken.value,
                 declarations = {}
@@ -42,7 +43,7 @@ function Parser.parse(self)
                     id = self.currentToken.value,
                     init = {}
                 }
-                table.insert(variableDeclaration.declarations, variableDeclarator)
+                table.insert(token.declarations, variableDeclarator)
                 self:nextToken()
                 if self.currentToken.type == Grammar.Punctuator then
                     self:nextToken()
@@ -52,15 +53,14 @@ function Parser.parse(self)
                             value = self.currentToken.value
                         }
                         variableDeclarator.init = stringLiteral
-                        return variableDeclaration
                     end
                 end
             end
         end
-        return { type = self.currentToken.type, value = self.currentToken.value }
+        return token
     end
     while self.currentIndex < #self.lexer.token do
-        AST.body = walk()
+        table.insert(AST.body, walk())
     end
     return AST
 end
@@ -77,6 +77,22 @@ function Parser.transformer(self)
         type = "Block",
         body = {}
     }
+    local body = self.JSAST.body;
+
+    local traverse = function (ast)
+        if ast == nil then
+            return nil
+        end
+
+        if type() then
+            
+        end
+    end
+
+    while 0 < #body do
+        
+    end
+
     return newAST
 end
 
