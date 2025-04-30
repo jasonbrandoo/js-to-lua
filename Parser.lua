@@ -30,33 +30,42 @@ function Parser.parse(self)
     local walk = function()
         local token = {}
         self:nextToken()
-        if self.currentToken.value == "let" and self.currentToken.type == Grammar.Identifier then
-            token = {
-                type = "VariableDeclaration",
-                value = self.currentToken.value,
-                declarations = {}
-            }
-            self:nextToken()
-            if self.currentToken.type == Grammar.Identifier then
-                local variableDeclarator = {
-                    type = "VariableDeclarator",
-                    id = self.currentToken.value,
-                    init = {}
-                }
-                table.insert(token.declarations, variableDeclarator)
+
+        local exp = function()
+            local value = "";
+            if self.currentToken.type == Grammar.Punctuator and self.currentToken.value == "=" then
                 self:nextToken()
-                if self.currentToken.type == Grammar.Punctuator then
-                    self:nextToken()
-                    if self.currentToken.type == Grammar.StringLiteral then
-                        local stringLiteral = {
-                            type = Grammar.StringLiteral,
-                            value = self.currentToken.value
-                        }
-                        variableDeclarator.init = stringLiteral
-                    end
+                if self.currentToken.type == Grammar.StringLiteral then
+                    value = self.currentToken.value
                 end
             end
+            return value
         end
+
+        local var = function()
+            local value = "";
+            if self.currentToken.value == "let" then
+                self:nextToken()
+                value = self.currentToken.value
+                self:nextToken()
+            end
+            return value
+        end
+
+        -- stat ::=  var '=' exp
+        local stat = function()
+            local _var = var()
+            local _exp = exp()
+            table.insert(token, { [_var] = _exp })
+        end
+
+        local block = function()
+            return stat()
+        end
+        local chunk = function()
+            return block()
+        end
+        chunk()
         return token
     end
     while self.currentIndex < #self.lexer.token do
@@ -79,18 +88,18 @@ function Parser.transformer(self)
     }
     local body = self.JSAST.body;
 
-    local traverse = function (ast)
+    local traverse = function(ast)
         if ast == nil then
             return nil
         end
 
         if type() then
-            
+
         end
     end
 
     while 0 < #body do
-        
+
     end
 
     return newAST
